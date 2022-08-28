@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+    {% if title %}
+        <title>KGM - {{ title }}</title>
+    {% else %}
+        <title>KGM</title>
+    {% endif %}
+</head>
+<body>
+   
+    {% block content %}{% endblock %}
+</body>
+</html>
