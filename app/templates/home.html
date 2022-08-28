@@ -1,4 +1,48 @@
 {% extends "layout.html" %}
 {% block content %}
-    <h1>Home page need attention</h1>
+<nav class="navbar navbar-dark bg-primary">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="home">KGMicro college</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="home">Daily report</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="permission">Leave</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="permission">Permission</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="profile">Profile</a>
+          </li>
+        </ul>
+        
+      </div>
+    </div>
+  </nav>
+  <div>
+    <table class="table table-hover">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">First</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">1</th>
+            <td>Mark</td>
+          </tr>
+          <tr>
+            <th scope="row">2</th>
+            <td>Jacob</td>
+          </tr>
+        </tbody>
+    </table>
+ </div>
 {% endblock content %}
