@@ -1,7 +1,8 @@
 from flask import render_template, url_for, flash, redirect
 from daily_punch import app
-from daily_punch.forms import RegistrationForm, LoginForm
+from daily_punch.forms import RegistrationForm, LoginForm, Daily_reportForm
 from daily_punch.models import User, Post
+import re
 
 @app.route("/", methods=['GET', 'POST'])
 @app.route("/login", methods=['GET', 'POST'])
@@ -15,9 +16,15 @@ def login():
             flash('Login Unsuccessful. Please check username and password', 'danger')
     return render_template('login.html', title='Login', form=form)
 
-@app.route("/home")
+@app.route("/home", methods=['GET', 'POST'])
 def home():
-    return render_template('home.html', title="Home")
+    form = Daily_reportForm()
+    if form.validate_on_submit():
+       intime = form.intime.data
+       outtime = form.outtime.date
+       flash('Your daily report got submitted', 'success')
+       return redirect(url_for('home'))
+    return render_template('home.html', title="Home", form=form)
 
 @app.route("/about")
 def about():

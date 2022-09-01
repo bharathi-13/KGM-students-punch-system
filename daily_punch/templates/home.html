@@ -23,40 +23,88 @@
     </div>
   </nav>
   <div>
-    <table class="table table-hover">
+    {% with messages = get_flashed_messages() %}  
+         {% if messages %}  
+               {% for message in messages %}  
+                    <p>{{ message }}</p>  
+               {% endfor %}  
+         {% endif %}  
+    {% endwith %}  
+    <table class="table table-bordered">
         <thead>
           <tr>
-            <th scope="col">Details</th>
+            <th scope="col" style="width:25%;">Details</th>
           </tr>
         </thead>
         <tbody>
           <tr>
             <th scope="row">Name</th>
-            <td>Mark</td>
+            <td>---</td>
           </tr>
           <tr>
             <th scope="row">Student ID</th>
-            <td>Jacob</td>
+            <td>---</td>
           </tr>
           <tr>
             <th scope="row">Email</th>
-            <td>Jacob</td>
+            <td>---</td>
           </tr>
           <tr>
-            <th scope="row">Domine</th>
-            <td>Jacob</td>
+            <th scope="row">Domain</th>
+            <td>---</td>
           </tr>
           <tr>
             <th scope="row">Batch</th>
-            <td>Jacob</td>
+            <td>---</td>
           </tr>
         </tbody>
     </table>
-    <div>
-      <div class="input-group">
-        <span class="input-group-text">Report discription</span>
-        <textarea class="form-control" aria-label="With textarea"></textarea>
+    <form  method="POST" action="">
+      <div class="row form-group center_home">
+        <h3 class="form-group">Daily report</h3>
+        <div class="col">
+          {{ form.intime.label(class="form-control-label") }}
+          {% if form.intime.errors %}
+          {{ form.intime(class="form-control form-control-lg is-invalid") }}
+          <div>
+              {% for error in form.intime.errors %}
+                  <span>{{ error }}</span>
+              {% endfor %}
+          </div>
+          {% else %}
+                        {{ form.intime(class="form-control form-control-lg") }}
+          {% endif %}
+        </div>
+        <div class="col">
+          {{ form.outtime.label(class="form-control-label") }}
+          {% if form.outtime.errors %}
+          {{ form.outtime(class="form-control form-control-lg is-invalid") }}
+          <div>
+              {% for error in form.outtime.errors %}
+                  <span>{{ error }}</span>
+              {% endfor %}
+          </div>
+          {% else %}
+                        {{ form.outtime(class="form-control form-control-lg") }}
+          {% endif %}
+        </div>
+        <div class="col">
+          {{ form.discription.label(class="form-control-label") }} 
+          {% if form.discription.errors %}
+          {{ form.discription(class="form-control form-control-lg is-invalid") }}
+          <div>
+              {% for error in fordiscription.errors %}
+                  <span>{{ error }}</span>
+              {% endfor %}
+          </div>
+          {% else %}
+            {{ form.discription(class="form-control form-control-lg") }}
+          {% endif %}
+          </div>
+          <div class="form-group">
+            {{ form.submit(class="btn btn-outline-primary") }}
+          </div>
+        </form>
       </div>
-    </div>
  </div>
 {% endblock content %}

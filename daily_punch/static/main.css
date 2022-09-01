@@ -79,8 +79,16 @@ body {
     font-size: 2.5rem;
   }
 
-  #borderLeft {
+  .center_login {
     width: 50%;
+    left: 25%;
+    position: relative;
+
+  }
+
+  .center_home {
+    width: 75%;
+    left: 15%;
     position: relative;
 
   }
