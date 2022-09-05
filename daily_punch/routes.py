@@ -1,7 +1,7 @@
 from flask import render_template, url_for, flash, redirect
 from daily_punch import app
 from daily_punch.forms import RegistrationForm, LoginForm, Daily_reportForm
-from daily_punch.models import User, Post
+from daily_punch.models import User, Daily_report
 import re
 
 @app.route("/", methods=['GET', 'POST'])
@@ -9,9 +9,11 @@ import re
 def login():
     form = LoginForm()
     if form.validate_on_submit():
-        if form.email.data == 'admin@blog.com' and form.password.data == 'password':
-            flash('You have been logged in!', 'success')
-            return redirect(url_for('home'))
+        user = User.query.filter_by(student_id=form.student_id.data).first()
+        if student_id and bcrypt.check_password_hash(user.password, form.password.data):
+            login_user(user, remember=form.remember.data)
+            next_page = request.args.get('next')
+            return redirect(next_page) if next_page else redirect(url_for('home'))
         else:
             flash('Login Unsuccessful. Please check username and password', 'danger')
     return render_template('login.html', title='Login', form=form)
@@ -21,7 +23,7 @@ def home():
     form = Daily_reportForm()
     if form.validate_on_submit():
        intime = form.intime.data
-       outtime = form.outtime.date
+       outtime = form.outtime.data
        flash('Your daily report got submitted', 'success')
        return redirect(url_for('home'))
     return render_template('home.html', title="Home", form=form)
@@ -30,13 +32,10 @@ def home():
 def about():
     return render_template('about.html', title="about")
 
-# @app.route("/register", methods=['GET', 'POST'])
-# def register():
-#     form = RegistrationForm()
-#     if form.validate_on_submit():
-#         flash(f'Account created for {form.username.data}!', 'success')
-#         return redirect(url_for('home'))
-#     return render_template('register.html', title='Register', form=form)
+
+@app.route("/test")
+def test():
+    return render_template('test.html')
 
 if __name__ == '__main__':
     app.run(debug=True)
