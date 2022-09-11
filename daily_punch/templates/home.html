@@ -1,7 +1,7 @@
 {% extends "layout.html" %}
 {% block content %}
 
-<nav class="navbar navbar-expand-md bg-primary navbar-dark">
+<nav class="navbar navbar-expand-md bg-primary navbar-dark form-group">
   <!-- Brand -->
   <a class="navbar-brand" href="home">KGMicro college</a>
 
@@ -16,8 +16,16 @@
       <li class="nav-item">
         <a class="nav-link" href="home">Daily report</a>
       </li>
+      {% if current_user.id == 1 %}
+      <li class="nav-item">
+        <a class="nav-link" href="admin">Admin</a>
+      </li>
+      {% endif %}
       <li class="nav-item">
         <a class="nav-link" href="about">About</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="logout">Logout</a>
       </li>
     </ul>
   </div>
@@ -32,79 +40,77 @@
         <tbody>
           <tr>
             <th scope="row">Name</th>
-            <td>---</td>
+            <td>{{ current_user.username }}</td>
           </tr>
           <tr>
-            <th scope="row">Student ID</th>
-            <td>---</td>
+            <th scope="row">ID</th>
+            <td>{{ current_user.student_id }}</td>
           </tr>
           <tr>
             <th scope="row">Email</th>
-            <td>---</td>
+            <td>{{ current_user.email }}</td>
           </tr>
           <tr>
             <th scope="row">Domain</th>
-            <td>---</td>
+            <td>{{ current_user.domain }}</td>
           </tr>
           <tr>
             <th scope="row">Batch</th>
-            <td>---</td>
+            <td>{{ current_user.batch }}</td>
           </tr>
         </tbody>
     </table>
     <form  method="POST" action="">
       {{ form.hidden_tag() }}
-      <div class="row form-group center_home">
-        <h3 class="form-group">Daily report</h3>
-
+      <div class="row form-group">
+        <h4 class="form-group">Daily report</h4>
         <div class="form-group">
-            <div class="row">
-                <div class='col-sm-6'>
-                  {{ form.intime.label(class="form-control-label") }} 
-                  {% if form.intime.errors %}
-                  {{ form.intime(class="form-control form-control-lg is-invalid", id="datetimepicker1") }}
-                  <div>
-                      {% for error in form.intime.errors %}
-                          <span>{{ error }}</span>
-                      {% endfor %}
-                  </div>
-                  {% else %}
-                    {{ form.intime(class="form-control form-control-lg", id="datetimepicker1") }}
-                  {% endif %}                
+          <div class="row">
+              <div class='col-sm-6'>
+                {{ form.intime.label(class="form-control-label") }} 
+                {% if form.intime.errors %}
+                {{ form.intime(class="form-control form-control-lg is-invalid", id="datetimepicker1") }}
+                <div>
+                    {% for error in form.intime.errors %}
+                        <span>{{ error }}</span>
+                    {% endfor %}
                 </div>
-                <div class='col-sm-6'>
-                  {{ form.outtime.label(class="form-control-label") }} 
-                  {% if form.outtime.errors %}
-                  {{ form.outtime(class="form-control form-control-lg is-invalid", id="datetimepicker2") }}
-                  <div>
-                      {% for error in form.outtime.errors %}
-                          <span>{{ error }}</span>
-                      {% endfor %}
-                  </div>
-                  {% else %}
-                    {{ form.outtime(class="form-control form-control-lg", id="datetimepicker2") }}
-                  {% endif %}             
-                 </div>
-            </div>
-        </div>
-
-
-        <div class="col">
-          {{ form.discription.label(class="form-control-label") }} 
-          {% if form.discription.errors %}
-          {{ form.discription(class="form-control form-control-lg is-invalid") }}
-          <div>
-              {% for error in form.discription.errors %}
-                  <span>{{ error }}</span>
-              {% endfor %}
+                {% else %}
+                  {{ form.intime(class="form-control form-control-lg", id="datetimepicker1") }}
+                {% endif %}                
+              </div>
+              <div class='col-sm-6'>
+                {{ form.outtime.label(class="form-control-label") }} 
+                {% if form.outtime.errors %}
+                {{ form.outtime(class="form-control form-control-lg is-invalid", id="datetimepicker2") }}
+                <div>
+                    {% for error in form.outtime.errors %}
+                        <span>{{ error }}</span>
+                    {% endfor %}
+                </div>
+                {% else %}
+                  {{ form.outtime(class="form-control form-control-lg", id="datetimepicker2") }}
+                {% endif %}             
+               </div>
           </div>
-          {% else %}
-            {{ form.discription(class="form-control form-control-lg") }}
-          {% endif %}
+      </div>
+      <div class="col form-group">
+        {{ form.discription.label(class="form-control-label") }} 
+        {% if form.discription.errors %}
+        {{ form.discription(class="form-control form-control-lg is-invalid") }}
+        <div>
+            {% for error in form.discription.errors %}
+                <span>{{ error }}</span>
+            {% endfor %}
         </div>
-        <div class="form-group">
-          {{ form.submit(class="btn btn-outline-primary") }}
-        </div>
+        {% else %}
+          {{ form.discription(class="form-control form-control-lg") }}
+        {% endif %}
+      </div>
+      <div class="form-group">
+        {{ form.submit(class="btn btn-outline-primary") }}
+      </div>
+      </div>
         </form>
       </div>
   </div>

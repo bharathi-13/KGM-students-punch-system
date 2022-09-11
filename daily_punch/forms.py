@@ -22,7 +22,7 @@ class LoginForm(FlaskForm):
     submit = SubmitField('Login')
 
 class Daily_reportForm(FlaskForm):
-    intime = DateTimeField('In time - D-M-Y H:M', format='%d-%m-%Y %H:%M', validators=[DataRequired()])
-    outtime = DateTimeField('Out time - D-M-Y H:M', format='%d-%m-%Y %H:%M', validators=[DataRequired()])
+    intime = DateTimeField('In time', format='%d-%m-%Y %H:%M', validators=[DataRequired()])
+    outtime = DateTimeField('Out time', format='%d-%m-%Y %H:%M', validators=[DataRequired()])
     discription = TextAreaField('Remarks', [optional(), length(max=300)])
     submit = SubmitField('Submit')

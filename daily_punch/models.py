@@ -1,23 +1,33 @@
 from datetime import datetime
-from daily_punch import db
+from daily_punch import db, login_manager
+from flask_login import UserMixin
 
 
-class User(db.Model):
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(int(user_id))
+
+class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(20), unique=True, nullable=False)
-    email = db.Column(db.String(120), unique=True, nullable=False)
-    batch = db.Column(db.String(20), nullable=False, default='default.jpg')
+    username = db.Column(db.String(50), unique=True, nullable=False)
+    email = db.Column(db.String(80), unique=True, nullable=False)
+    batch = db.Column(db.String(5), nullable=False, default='RP--')
     password = db.Column(db.String(60), nullable=False)
-    report = db.relationship('Daily_report', backref='author', lazy=True)
     student_id = db.Column(db.String(8), nullable=False, unique=True, )
+    domain = db.Column(db.String(20), nullable=False, default='IMS')
 
+    # report = db.relationship('Daily_report', backref='author', lazy=T?rue)
     def __repr__(self):
         return f"User('{self.username}', '{self.email}', '{self.batch}', '{self.student_id}')"
 
 
 class Daily_report(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    intime = db.Column()
+    intime = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    outtime = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    hours = db.Column(db.String(10), nullable=False)
+    remarks = db.Column(db.String(200))
+    student = db.Column(db.String(30), nullable=False)
 
     def __repr__(self):
         return f"Post('{self.title}', '{self.date_posted}')"
