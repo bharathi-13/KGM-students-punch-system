@@ -21,8 +21,10 @@ class LoginForm(FlaskForm):
     remember = BooleanField('Remember Me')
     submit = SubmitField('Login')
 
-class Daily_reportForm(FlaskForm):
-    intime = DateTimeField('In time', format='%d-%m-%Y %H:%M', validators=[DataRequired()])
-    outtime = DateTimeField('Out time', format='%d-%m-%Y %H:%M', validators=[DataRequired()])
+class Morning_reportForm(FlaskForm):
+    discription = TextAreaField('Remarks', [optional(), length(max=300)])
+    submit = SubmitField('Submit')
+
+class Evening_reportForm(FlaskForm):
     discription = TextAreaField('Remarks', [optional(), length(max=300)])
     submit = SubmitField('Submit')

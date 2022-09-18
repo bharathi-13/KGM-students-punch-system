@@ -16,18 +16,15 @@ class User(db.Model, UserMixin):
     student_id = db.Column(db.String(8), nullable=False, unique=True, )
     domain = db.Column(db.String(20), nullable=False, default='IMS')
 
-    # report = db.relationship('Daily_report', backref='author', lazy=T?rue)
-    def __repr__(self):
-        return f"User('{self.username}', '{self.email}', '{self.batch}', '{self.student_id}')"
 
-
-class Daily_report(db.Model):
+class Intime(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     intime = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
-    outtime = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
-    hours = db.Column(db.String(10), nullable=False)
     remarks = db.Column(db.String(200))
     student = db.Column(db.String(30), nullable=False)
 
-    def __repr__(self):
-        return f"Post('{self.title}', '{self.date_posted}')"
+class Outtime(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    outtime = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    remarks = db.Column(db.String(200))
+    student = db.Column(db.String(30), nullable=False)

@@ -1,117 +1,102 @@
-{% extends "layout.html" %}
-{% block content %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='main.css') }}">
+    
+        <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet"> -->
+        <!-- <link href="https://getbootstrap.com/docs/5.2/assets/css/docs.css" rel="stylesheet"> -->
 
-<nav class="navbar navbar-expand-md bg-primary navbar-dark form-group">
-  <!-- Brand -->
-  <a class="navbar-brand" href="home">KGMicro college</a>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"></script>
 
-  <!-- Toggler/collapsibe Button -->
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-
-  <!-- Navbar links -->
-  <div class="collapse navbar-collapse" id="collapsibleNavbar">
-    <ul class="navbar-nav">
-      <li class="nav-item">
-        <a class="nav-link" href="home">Daily report</a>
-      </li>
-      {% if current_user.id == 1 %}
-      <li class="nav-item">
-        <a class="nav-link" href="admin">Admin</a>
-      </li>
-      {% endif %}
-      <li class="nav-item">
-        <a class="nav-link" href="about">About</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="logout">Logout</a>
-      </li>
-    </ul>
-  </div>
-</nav>
-  <div> 
-    <table class="table table-bordered">
-        <thead>
-          <tr>
-            <th scope="col" style="width:25%;">Details</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <th scope="row">Name</th>
-            <td>{{ current_user.username }}</td>
-          </tr>
-          <tr>
-            <th scope="row">ID</th>
-            <td>{{ current_user.student_id }}</td>
-          </tr>
-          <tr>
-            <th scope="row">Email</th>
-            <td>{{ current_user.email }}</td>
-          </tr>
-          <tr>
-            <th scope="row">Domain</th>
-            <td>{{ current_user.domain }}</td>
-          </tr>
-          <tr>
-            <th scope="row">Batch</th>
-            <td>{{ current_user.batch }}</td>
-          </tr>
-        </tbody>
-    </table>
-    <form  method="POST" action="">
-      {{ form.hidden_tag() }}
-      <div class="row form-group">
-        <h4 class="form-group">Daily report</h4>
-        <div class="form-group">
-          <div class="row">
-              <div class='col-sm-6'>
-                {{ form.intime.label(class="form-control-label") }} 
-                {% if form.intime.errors %}
-                {{ form.intime(class="form-control form-control-lg is-invalid", id="datetimepicker1") }}
-                <div>
-                    {% for error in form.intime.errors %}
-                        <span>{{ error }}</span>
-                    {% endfor %}
-                </div>
-                {% else %}
-                  {{ form.intime(class="form-control form-control-lg", id="datetimepicker1") }}
-                {% endif %}                
-              </div>
-              <div class='col-sm-6'>
-                {{ form.outtime.label(class="form-control-label") }} 
-                {% if form.outtime.errors %}
-                {{ form.outtime(class="form-control form-control-lg is-invalid", id="datetimepicker2") }}
-                <div>
-                    {% for error in form.outtime.errors %}
-                        <span>{{ error }}</span>
-                    {% endfor %}
-                </div>
-                {% else %}
-                  {{ form.outtime(class="form-control form-control-lg", id="datetimepicker2") }}
-                {% endif %}             
-               </div>
-          </div>
-      </div>
-      <div class="col form-group">
-        {{ form.discription.label(class="form-control-label") }} 
-        {% if form.discription.errors %}
-        {{ form.discription(class="form-control form-control-lg is-invalid") }}
-        <div>
-            {% for error in form.discription.errors %}
-                <span>{{ error }}</span>
-            {% endfor %}
-        </div>
+        {% if title %}
+        <title>KGM - {{ title }}</title>
         {% else %}
-          {{ form.discription(class="form-control form-control-lg") }}
+        <title>KGM</title>
         {% endif %}
-      </div>
-      <div class="form-group">
-        {{ form.submit(class="btn btn-outline-primary") }}
-      </div>
-      </div>
-        </form>
-      </div>
-  </div>
-{% endblock content %}
+    </head>
+
+    <body >
+      <main role="main" class="container">
+      <img src="{{url_for('static', filename='kgm(1).jpg')}}" class="rounded mx-auto d-block">
+        <div class="form-group">
+            <nav class="navbar navbar-dark bg-primary form-group">
+                <div class="container-fluid">
+                  <a class="navbar-brand" href="#">KGMicro college</a>
+                  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                  </button>
+                  <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav">
+                      <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="#">Home</a>
+                      </li>
+                      {% if current_user.id == 1 %}
+                      <li class="nav-item">
+                        <a class="nav-link" href="admin">Admin</a>
+                      </li>
+                      {% endif %}
+                      <li class="nav-item">
+                        <a class="nav-link" href="about">About</a>
+                      </li>
+                      <li class="nav-item">
+                        <a class="nav-link" href="logout">Logout</a>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </nav>
+            <div class="form-group"> 
+                <table class="table table-bordered">
+                    <thead>
+                    <tr>
+                    <th scope="col" style="width:25%;">Details</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                        <th scope="row">Name</th>
+                        <td>{{ current_user.username }}</td>
+                        </tr>
+                        <tr>
+                        <th scope="row">Email</th>
+                        <td>{{ current_user.email }}</td>
+                        </tr>
+                        <tr>
+                        <th scope="row">Domain</th>
+                        <td>{{ current_user.domain }}</td>
+                        </tr>
+                        <tr>
+                        <th scope="row">Batch</th>
+                        <td>{{ current_user.batch }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <form method="POST" action="">
+              {% block home %}{% endblock %}
+              <div class="col-md-8 container">
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                  {% if messages %}
+                    {% for category, message in messages %}
+                      <div class="alert alert-{{ category }}">
+                        {{ message }}
+                      </div>
+                    {% endfor %}
+                  {% endif %}
+                {% endwith %}
+              </div>
+            </form>
+        </div>
+    </main>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+    </body>
+</html>

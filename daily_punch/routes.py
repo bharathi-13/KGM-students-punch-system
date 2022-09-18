@@ -1,7 +1,7 @@
 from flask import render_template, url_for, flash, redirect,request
-from daily_punch import app, admin, db, bcrypt
-from daily_punch.forms import RegistrationForm, LoginForm, Daily_reportForm
-from daily_punch.models import User, Daily_report
+from daily_punch import app, admin, db
+from daily_punch.forms import RegistrationForm, LoginForm, Morning_reportForm, Evening_reportForm
+from daily_punch.models import User, Intime, Outtime
 from flask_login import login_user, current_user, logout_user, login_required
 from datetime import datetime
 from flask_admin.contrib.sqla import ModelView
@@ -10,51 +10,93 @@ import re
 @app.route("/", methods=['GET', 'POST'])
 @app.route("/login", methods=['GET', 'POST'])
 def login():
-    if current_user.is_authenticated:
-        return redirect(url_for('home'))
+
     form = LoginForm()
-    if form.validate_on_submit():
-        user = User.query.filter_by(email=form.email.data).first()
 
-        if user and bcrypt.check_password_hash(user.password, form.password.data):
-            login_user(user, remember=form.remember.data)
-            next_page = request.args.get('next')
-            return redirect(next_page) if next_page else redirect(url_for('home'))
-            flash('You got logged in', 'success')
+    real_time = datetime.now()
+    now_time = real_time.strftime('%H:%M:%S')
 
-        else:
-            flash('Login Unsuccessful. Please check username and password', 'danger')
+    time_ = datetime.strptime('12:00:00', '%H:%M:%S')
+    condi_time = time_.strftime('%H:%M:%S')
+
+
+    if now_time <= condi_time:
+        if current_user.is_authenticated:
+            return redirect(url_for('morning'))
+        
+        if form.validate_on_submit():
+            user = User.query.filter_by(email=form.email.data).first()
+
+            if user and user.password == form.password.data:
+                login_user(user, remember=form.remember.data)
+                next_page = request.args.get('next')
+                return redirect(next_page) if next_page else redirect(url_for('morning'))
+                flash('You got logged in', 'success')
+            
+            else:
+                flash('Login Unsuccessful. Please check username and password', 'danger')
+        
+        
+    if now_time >= condi_time:
+        if current_user.is_authenticated:
+            return redirect(url_for('evening'))
+        
+        if form.validate_on_submit():
+            user = User.query.filter_by(email=form.email.data).first()
+
+            if user and user.password == form.password.data:
+                login_user(user, remember=form.remember.data)
+                next_page = request.args.get('next')
+                return redirect(next_page) if next_page else redirect(url_for('evening'))
+                flash('You got logged in', 'success')
+
+            else:
+                flash('Login Unsuccessful. Please check username and password', 'danger')
+
     return render_template('login.html', title='Login', form=form)
 
-@app.route("/home", methods=['GET', 'POST'])
+@app.route("/morning", methods=['GET', 'POST'])
 @login_required
-def home():
-    form = Daily_reportForm()
+def morning():
     user = User()
+    form = Morning_reportFor()
+
+    real_time = datetime.now()
+    now_time = real_time.strftime('%H:%M:%S')
+
+
     if form.validate_on_submit():
 
-       intime = datetime.strptime(str(form.intime.data), "%Y-%m-%d %H:%M:%S")
-       outtime = datetime.strptime(str(form.outtime.data), "%Y-%m-%d %H:%M:%S")
-       difference = outtime - intime
-       sec = difference.total_seconds()
-       hours = sec / (60 * 60)
-       
-       real_datetime = datetime.now()
-       fromatted_rt = real_datetime.strftime( "%Y-%m-%d %H:%M:%S" )
-
-       if fromatted_rt < str(outtime):
-        flash('Your out time is not matching with the current time', 'danger')
-
-       else:
-        flash(f'Your daily report got submitted. Your total hours is {hours}', 'success')
-
-        punch = Daily_report(intime=intime, outtime=outtime, hours=hours, remarks=form.discription.data, student= current_user.username)
+        punch = Intime(remarks=form.discription.data, student=current_user.username)
         db.session.add(punch)
         db.session.commit()
 
-        return redirect(url_for('home'))
+        flash(f'Your daily report got submitted. Your intime is {now_time}', 'success')
 
-    return render_template('home.html', title="Home", form=form, current_user=current_user)
+        return redirect(url_for('morning'))
+
+    return render_template('morning.html', title="Home", form=form, current_user=current_user, now_time=now_time)
+
+@app.route("/evening", methods=['GET', 'POST'])
+@login_required
+def evening():
+    user = User()
+    form = Evening_reportForm()
+
+    real_time = datetime.now()
+    now_time = real_time.strftime('%H:%M:%S')
+
+
+    if form.validate_on_submit():
+
+        punch = Outtime(remarks=form.discription.data, student=current_user.username)
+        db.session.add(punch)
+        db.session.commit()
+
+        flash(f'Your daily report got submitted. Your outtime is {now_time}', 'success')
+        return redirect(url_for('evening'))
+
+    return render_template('evening.html', title="Home", form=form, current_user=current_user, now_time=now_time)
 
 @app.route("/about")
 def about():
@@ -74,13 +116,11 @@ def login_required(f):
         return f(*args, **kwargs)
     return decorated_function
 
-@app.route("/test")
-def test():
-    return render_template('test.html')
 
 class MyModelView(ModelView):
     def is_accessible(self):
         return current_user.is_authenticated
 
 admin.add_view(MyModelView(User, db.session))
-admin.add_view(MyModelView(Daily_report, db.session))
+admin.add_view(MyModelView(Intime, db.session))
+admin.add_view(MyModelView(Outtime, db.session))
