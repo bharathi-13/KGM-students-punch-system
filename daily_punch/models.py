@@ -19,12 +19,12 @@ class User(db.Model, UserMixin):
 
 class Intime(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    intime = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    intime = db.Column(db.DateTime, nullable=False, default=datetime.now)
     remarks = db.Column(db.String(200))
     student = db.Column(db.String(30), nullable=False)
 
 class Outtime(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    outtime = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    outtime = db.Column(db.DateTime, nullable=False, default=datetime.now)
     remarks = db.Column(db.String(200))
     student = db.Column(db.String(30), nullable=False)

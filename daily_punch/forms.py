@@ -28,3 +28,6 @@ class Morning_reportForm(FlaskForm):
 class Evening_reportForm(FlaskForm):
     discription = TextAreaField('Remarks', [optional(), length(max=300)])
     submit = SubmitField('Submit')
+
+class ExportForm(FlaskForm):
+    submit = SubmitField('Export')

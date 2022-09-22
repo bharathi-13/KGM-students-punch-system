@@ -1,10 +1,12 @@
-from flask import render_template, url_for, flash, redirect,request
-from daily_punch import app, admin, db
-from daily_punch.forms import RegistrationForm, LoginForm, Morning_reportForm, Evening_reportForm
+from flask import render_template, url_for, flash, redirect, request, send_file
+from daily_punch import app, admin, db, conn
+from daily_punch.forms import RegistrationForm, LoginForm, Morning_reportForm, Evening_reportForm, ExportForm
 from daily_punch.models import User, Intime, Outtime
 from flask_login import login_user, current_user, logout_user, login_required
 from datetime import datetime
 from flask_admin.contrib.sqla import ModelView
+from flask_admin import BaseView, expose
+import pandas as pd
 import re
 
 @app.route("/", methods=['GET', 'POST'])
@@ -59,7 +61,7 @@ def login():
 @login_required
 def morning():
     user = User()
-    form = Morning_reportFor()
+    form = Morning_reportForm()
 
     real_time = datetime.now()
     now_time = real_time.strftime('%H:%M:%S')
@@ -108,6 +110,15 @@ def logout():
     logout_user()
     return redirect(url_for('login'))
 
+
+@app.route('/test', methods=['GET', 'POST'])
+def test():
+
+    if request.method == 'POST':
+        print(request.form.getlist('download_list'))   
+
+    return render_template('test.html')
+
 def login_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
@@ -121,6 +132,28 @@ class MyModelView(ModelView):
     def is_accessible(self):
         return current_user.is_authenticated
 
+class Export(BaseView):
+    @expose('/', methods=['GET', 'POST'])
+    def index(self):
+        if request.method == 'POST':
+            expolist = request.form.getlist('mychechbox')
+            for data in expolist:
+                df = pd.read_sql_query(f"select * from {data}", conn)
+                df.to_excel(f"{data}.xlsx")
+                path = f"../{data}.xlsx"
+                return send_file(path, as_attachment=True)
+
+        return self.render('admin/export.html')
+
+class Exit(BaseView):
+    @expose('/')
+    def index(self):
+        return redirect(url_for('login'))
+        
+
+
 admin.add_view(MyModelView(User, db.session))
 admin.add_view(MyModelView(Intime, db.session))
 admin.add_view(MyModelView(Outtime, db.session))
+admin.add_view(Export(name='Export'))
+admin.add_view(Exit(name='Back ->'))
