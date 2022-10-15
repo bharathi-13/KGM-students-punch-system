@@ -13,8 +13,9 @@ class User(db.Model, UserMixin):
     email = db.Column(db.String(80), unique=True, nullable=False)
     batch = db.Column(db.String(5), nullable=False, default='RP--')
     password = db.Column(db.String(60), nullable=False)
-    student_id = db.Column(db.String(8), nullable=False, unique=True, )
+    student_id = db.Column(db.String(8), nullable=False, unique=True,)
     domain = db.Column(db.String(20), nullable=False, default='IMS')
+    image_file = db.Column(db.String(20), nullable=False, default='default.jpg')
 
 
 class Intime(db.Model):

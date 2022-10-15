@@ -7,7 +7,9 @@ from datetime import datetime
 from flask_admin.contrib.sqla import ModelView
 from flask_admin import BaseView, expose
 import pandas as pd
+from PIL import Image
 import re
+
 
 @app.route("/", methods=['GET', 'POST'])
 @app.route("/login", methods=['GET', 'POST'])

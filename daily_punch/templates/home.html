@@ -27,7 +27,7 @@
         <div class="form-group">
             <nav class="navbar navbar-dark bg-primary form-group">
                 <div class="container-fluid">
-                  <a class="navbar-brand" href="#">KGMicro college</a>
+                  <a class="navbar-brand navbar-center" href="#">IMS student login portal</a>
                   <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                   </button>
@@ -51,33 +51,35 @@
                   </div>
                 </div>
               </nav>
-            <div class="form-group"> 
-                <table class="table table-bordered">
-                    <thead>
-                    <tr>
-                    <th scope="col" style="width:25%;">Details</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                        <th scope="row">Name</th>
-                        <td>{{ current_user.username }}</td>
-                        </tr>
-                        <tr>
-                        <th scope="row">Email</th>
-                        <td>{{ current_user.email }}</td>
-                        </tr>
-                        <tr>
-                        <th scope="row">Domain</th>
-                        <td>{{ current_user.domain }}</td>
-                        </tr>
-                        <tr>
-                        <th scope="row">Batch</th>
-                        <td>{{ current_user.batch }}</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+
+              <form>
+                    <table class="table table-bordered">
+                      <thead>
+                      <tr>
+                      <th scope="col" style="width:25%;">Details</th>
+                      </tr>
+                      </thead>
+                      <tbody>
+                          <tr>
+                          <th scope="row">Name</th>
+                          <td>{{ current_user.username }}</td>
+                          </tr>
+                          <tr>
+                          <th scope="row">Email</th>
+                          <td>{{ current_user.email }}</td>
+                          </tr>
+                          <tr>
+                          <th scope="row">Domain</th>
+                          <td>{{ current_user.domain }}</td>
+                          </tr>
+                          <tr>
+                          <th scope="row">Batch</th>
+                          <td>{{ current_user.batch }}</td>
+                          </tr>
+                      </tbody>
+                    </table>
+                </form>
+            
             <form method="POST" action="">
               {% block home %}{% endblock %}
               <div class="col-md-8 container">
@@ -93,6 +95,10 @@
               </div>
             </form>
         </div>
+
+
+
+
     </main>
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
