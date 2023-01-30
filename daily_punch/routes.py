@@ -10,6 +10,10 @@ import pandas as pd
 from PIL import Image
 import re
 
+def excel_gen(self):
+        df = pd.read_sql_query(f"select * from {self}", conn)
+        df.to_excel(f"{self}.xlsx")
+
 
 @app.route("/", methods=['GET', 'POST'])
 @app.route("/login", methods=['GET', 'POST'])
@@ -40,7 +44,6 @@ def login():
             else:
                 flash('Login Unsuccessful. Please check username and password', 'danger')
         
-        
     if now_time >= condi_time:
         if current_user.is_authenticated:
             return redirect(url_for('evening'))
@@ -68,7 +71,6 @@ def morning():
     real_time = datetime.now()
     now_time = real_time.strftime('%H:%M:%S')
 
-
     if form.validate_on_submit():
 
         punch = Intime(remarks=form.discription.data, student=current_user.username)
@@ -90,7 +92,6 @@ def evening():
     real_time = datetime.now()
     now_time = real_time.strftime('%H:%M:%S')
 
-
     if form.validate_on_submit():
 
         punch = Outtime(remarks=form.discription.data, student=current_user.username)
@@ -106,12 +107,10 @@ def evening():
 def about():
     return render_template('about.html', title="about")
 
-
 @app.route("/logout")
 def logout():
     logout_user()
     return redirect(url_for('login'))
-
 
 @app.route('/test', methods=['GET', 'POST'])
 def test():
@@ -129,7 +128,6 @@ def login_required(f):
         return f(*args, **kwargs)
     return decorated_function
 
-
 class MyModelView(ModelView):
     def is_accessible(self):
         return current_user.is_authenticated
@@ -140,8 +138,7 @@ class Export(BaseView):
         if request.method == 'POST':
             expolist = request.form.getlist('mychechbox')
             for data in expolist:
-                df = pd.read_sql_query(f"select * from {data}", conn)
-                df.to_excel(f"{data}.xlsx")
+                excel_gen(data)
                 path = f"../{data}.xlsx"
                 return send_file(path, as_attachment=True)
 
@@ -151,8 +148,6 @@ class Exit(BaseView):
     @expose('/')
     def index(self):
         return redirect(url_for('login'))
-        
-
 
 admin.add_view(MyModelView(User, db.session))
 admin.add_view(MyModelView(Intime, db.session))
